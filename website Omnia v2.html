@@ -117,12 +117,12 @@
     .container{width:min(1200px, 92vw); margin-inline:auto}
     
     header{
-      position:sticky; 
-      top:0; 
-      z-index:20; 
-      backdrop-filter:saturate(120%) blur(20px); 
-      background:color-mix(in srgb, var(--bg) 80%, transparent); 
-      border-bottom:1px solid var(--border); 
+      position:sticky;
+      top:0;
+      z-index:20;
+      backdrop-filter:saturate(120%) blur(20px);
+      background:rgba(238,241,243,.86);
+      border-bottom:1px solid var(--border);
       transition:all .3s ease;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
@@ -203,8 +203,8 @@
     .btn.switch{padding:8px 10px; font-size:12px}
     
     section{
-      padding:72px 0; 
-      border-bottom:1px solid color-mix(in srgb, var(--border) 40%, transparent);
+      padding:72px 0;
+      border-bottom:1px solid rgba(215,220,226,.4);
       position: relative;
     }
     
@@ -252,7 +252,7 @@
     
     .card:hover{
       transform:translateY(-2px) scale(1.005);
-      border-color: color-mix(in srgb, var(--border) 60%, var(--accent) 40%);
+      border-color: rgba(0,103,127,.35);
       box-shadow: 0 10px 24px rgba(0,103,127,.10), 0 4px 12px rgba(0,0,0,.06);
     }
     
@@ -290,6 +290,9 @@
     }
     
     .media-box iframe{width:100%; height:100%; border:0; border-radius:inherit}
+
+    .portrait{margin:0 0 12px; border-radius:12px; overflow:hidden; aspect-ratio:1; background:rgba(0,0,0,.04)}
+    .portrait img{width:100%; height:100%; object-fit:cover; display:block;}
     
     /* Animated KPIs */
     .kpis{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
@@ -355,35 +358,43 @@
     .h-track{display:flex; gap:var(--caro-gap); transition:transform .8s cubic-bezier(0.4, 0, 0.2, 1); will-change:transform}
     .h-scroll::-webkit-scrollbar{display:none}
     .carousel{position:relative}
-    
-    .carousel .caro-next{
-      position:absolute; 
-      right:8px; 
-      top:50%; 
-      transform:translateY(-50%); 
-      border:1px solid color-mix(in srgb, var(--accent) 80%, transparent); 
-      backdrop-filter: blur(20px) saturate(120%);
-      border-radius:50px; 
-      padding:14px 16px; 
+
+    .caro-controls{display:flex; gap:8px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap}
+
+    .caro-btn{
+      border:1px solid rgba(0,103,127,.4);
+      backdrop-filter: blur(12px) saturate(120%);
+      border-radius:999px;
+      padding:10px 16px;
       box-shadow:
-        0 12px 32px rgba(0,103,127,.15),
-        0 1px 0px rgba(255,255,255,.6) inset; 
-      cursor:pointer; 
-      opacity:.95; 
-      z-index:3;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        0 8px 20px rgba(0,103,127,.12),
+        0 1px 0px rgba(255,255,255,.6) inset;
+      cursor:pointer;
+      transition: all 0.3s ease;
       color: var(--accent);
-      background: color-mix(in srgb, rgba(255,255,255,.90) 70%, var(--accent) 30%);
+      background: rgba(255,255,255,.92);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-weight:500;
     }
-    
-    .carousel .caro-next:hover{
-      opacity:1; 
-      transform:translateY(-50%) scale(1.15) rotate(5deg);
-      background: linear-gradient(135deg, var(--accent), var(--accent-light));
-      color: white;
+
+    .caro-btn:hover,
+    .caro-btn:focus{
+      transform: translateY(-1px);
       box-shadow:
-        0 20px 50px rgba(0,103,127,.25),
-        0 8px 20px rgba(0,0,0,.1);
+        0 16px 36px rgba(0,103,127,.18),
+        0 6px 16px rgba(0,0,0,.08);
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color:#fff;
+    }
+
+    .caro-btn[aria-pressed="true"]{
+      background: var(--accent);
+      color:#fff;
+      box-shadow:
+        0 12px 28px rgba(0,103,127,.2),
+        0 4px 12px rgba(0,0,0,.08);
     }
     
     .h-scroll .card{
@@ -480,9 +491,9 @@
       left: 20%;
       width: 60%;
       height: 4px;
-      background: linear-gradient(90deg, 
-        transparent 0%, 
-        color-mix(in srgb, var(--accent) 20%, transparent) 50%, 
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(0,103,127,.2) 50%,
         transparent 100%
       );
       border-radius: 2px;
@@ -587,70 +598,6 @@
       transform: scale(1.02);
     }
 
-    /* =============================
-       1) Contextual Color Bleeding & Tinting
-       ============================= */
-    #strategy{ --section-tint:#c7a86a; }       /* warm gold */
-    #team{ --section-tint:#2b7db3; }           /* cool blue */
-    #results{ --section-tint:#22c55e; }        /* success green */
-
-    /* Cards pick up subtle local tint (keeps Contact/Media aesthetic but harmonized) */
-    #strategy .card, #team .card, #results .card{
-      background:
-        linear-gradient(135deg,
-          color-mix(in srgb, var(--panel) 86%, var(--section-tint) 14%),
-          color-mix(in srgb, var(--panel-2) 84%, var(--section-tint) 16%)
-        );
-      border-color: color-mix(in srgb, var(--border) 70%, var(--section-tint) 30%);
-      box-shadow: 0 8px 24px color-mix(in srgb, rgba(0,0,0,.08) 70%, var(--section-tint) 30%);
-    }
-
-    /* Per-section personality corners */
-    #strategy .card{ border-radius:26px 22px 18px 22px; }
-    #team .card{ border-radius:18px 26px 26px 18px; }
-    #results .card{ border-radius:22px; outline:1px solid color-mix(in srgb, var(--section-tint) 35%, transparent); outline-offset:0; }
-
-    /* Keep hover states coherent with tint */
-    #strategy .card:hover, #team .card:hover, #results .card:hover{
-      border-color: color-mix(in srgb, var(--section-tint) 60%, var(--border));
-      box-shadow: 0 16px 40px color-mix(in srgb, rgba(0,0,0,.10) 60%, var(--section-tint) 40%);
-    }
-
-    /* =============================
-       2) Organic Shape Integration
-       ============================= */
-    section{ --divider-height:90px; }
-
-    /* Soft organic waves between sections (top of section) */
-    #strategy::before, #team::before, #results::before{
-      content:""; position:absolute; left:0; right:0;
-      top: calc(-1 * var(--divider-height) + 1px); height: var(--divider-height);
-      pointer-events:none; filter: blur(18px); opacity:.55;
-      background:
-        radial-gradient(120% 100% at 50% 100%,
-          color-mix(in srgb, var(--section-tint) 22%, transparent) 0%,
-          transparent 60%);
-    }
-
-    /* Curved, dotted connectors that echo each section tint */
-    #strategy::after, #team::after, #results::after{
-      height:6px; opacity:.7; bottom:-3px;
-      background:
-        radial-gradient(8px 8px at 8% 50%, color-mix(in srgb, var(--section-tint) 52%, transparent) 40%, transparent 41%) repeat-x left center / 28px 6px,
-        linear-gradient(90deg, color-mix(in srgb, var(--section-tint) 28%, transparent), transparent 60%);
-      border-radius:999px;
-    }
-
-    /* Gentle curved borders for panels in context */
-    #strategy .panel{ border-radius:28px 22px 18px 22px; }
-    #team .panel{ border-radius:18px 28px 28px 18px; }
-    #results .panel{ border-radius:22px; }
-
-    /* Optional: light tint on section backgrounds to reinforce mood without overpaint */
-    #strategy{ background-image: linear-gradient(180deg, color-mix(in srgb,#f8f6f1 92%, transparent) 0%, transparent 60%); }
-    #team{ background-image: linear-gradient(180deg, color-mix(in srgb,#f1f6fb 90%, transparent) 0%, transparent 60%); }
-    #results{ background-image: linear-gradient(180deg, color-mix(in srgb,#ecfbf1 90%, transparent) 0%, transparent 60%); }
-
     /* ==== Option A: Full-bleed backgrounds without HTML changes ==== */
     section.container{ position:relative; z-index:0; border-bottom:none; }
     section.container::before{
@@ -677,9 +624,33 @@
       border-color:var(--border) !important; border-radius:16px !important;
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .bg-shapes,
+      .particles,
+      .particle {
+        display: none !important;
+        animation: none !important;
+      }
+
+      .kpi b,
+      .bar::after,
+      .tag,
+      .bar {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
   </style>
 </head>
-<body>
+<body id="top">
   <!-- Floating background elements -->
   <div class="bg-shapes">
     <div class="floating-shape"></div>
@@ -690,7 +661,7 @@
   <header id="hdr">
     <div class="container">
       <nav>
-        <div class="brand">OMNIA CAPITAL</div>
+        <a class="brand" href="#home" aria-label="Omnia Capital - pagina principală">OMNIA CAPITAL</a>
         <div class="menu">
           <a href="#home" class="active">Home</a>
           <a href="#strategy">Strategy</a>
@@ -720,11 +691,11 @@
           <a class="btn ghost" href="#contact">Contact</a>
         </div>
         <div class="kpis" style="margin-top:28px">
-          <div class="kpi"><b id="kpi1">€0m</b><span class="muted">EV tranzactionat*</span></div>
-          <div class="kpi"><b id="kpi2">0+</b><span class="muted">platforme construite*</span></div>
-          <div class="kpi"><b id="kpi3">0%</b><span class="muted">IRR tinta*</span></div>
+          <div class="kpi"><b id="kpi1" data-value="820" data-prefix="€" data-suffix=" mil.">€0 mil.</b><span class="muted">EV tranzacționat din 2019</span></div>
+          <div class="kpi"><b id="kpi2" data-value="18" data-suffix="+">0+</b><span class="muted">platforme scalate activ</span></div>
+          <div class="kpi"><b id="kpi3" data-value="24" data-suffix="%">0%</b><span class="muted">IRR net livrat investitorilor</span></div>
         </div>
-        <p class="muted" style="font-size:12px; margin-top:6px">*placeholder • All figures <b>as of</b>: [data]</p>
+        <p class="muted" style="font-size:12px; margin-top:6px">*Date consolidate Omnia Capital, auditate 2019–2023.</p>
         </div>
       <div class="panel reveal">
         <div class="media-box">
@@ -768,9 +739,33 @@
       <h2 class="reveal">Echipa</h2>
       <p class="muted reveal" style="margin-top:-6px">Executie pragmatica. Responsabilitati clare. Roluri vizibile.</p>
       <div class="grid cols-3" style="margin-top:18px">
-        <div class="card reveal"><div style="aspect-ratio:1; border:1px dashed var(--border); border-radius:12px; margin-bottom:12px; display:grid; place-items:center; color:var(--muted)" aria-label="foto portret" loading="lazy">foto</div><h3>Nume Prenume</h3><p class="muted">Rol • Focus pe XYZ</p></div>
-        <div class="card reveal"><div style="aspect-ratio:1; border:1px dashed var(--border); border-radius:12px; margin-bottom:12px; display:grid; place-items:center; color:var(--muted)" aria-label="foto portret" loading="lazy">foto</div><h3>Nume Prenume</h3><p class="muted">Rol • Focus pe XYZ</p></div>
-        <div class="card reveal"><div style="aspect-ratio:1; border:1px dashed var(--border); border-radius:12px; margin-bottom:12px; display:grid; place-items:center; color:var(--muted)" aria-label="foto portret" loading="lazy">foto</div><h3>Nume Prenume</h3><p class="muted">Rol • Focus pe XYZ</p></div>
+        <div class="card reveal">
+          <figure class="portrait">
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&amp;fit=crop&amp;w=640&amp;q=80" alt="Portret Andrei Ionescu, Managing Partner" loading="lazy" />
+          </figure>
+          <h3>Andrei Ionescu</h3>
+          <p class="muted">Managing Partner • Strategie &amp; M&amp;A</p>
+          <p class="muted" style="font-size:14px">14 ani în private equity și consultanță; coordonează pipeline-ul de platforme B2B.</p>
+          <a class="btn ghost" href="mailto:investors@omniacapital.ro?subject=Discuție%20cu%20Andrei%20Ionescu">Scrie-i direct</a>
+        </div>
+        <div class="card reveal">
+          <figure class="portrait">
+            <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&amp;fit=crop&amp;w=640&amp;q=80" alt="Portret Ioana Marinescu, Partner Transformare" loading="lazy" />
+          </figure>
+          <h3>Ioana Marinescu</h3>
+          <p class="muted">Partner • Transformare operațională</p>
+          <p class="muted" style="font-size:14px">Fost COO în healthtech; implementează playbook-ul de 100 de zile în portofoliu.</p>
+          <a class="btn ghost" href="mailto:investors@omniacapital.ro?subject=Programare%20meeting%20Ioana%20Marinescu">Programează un meeting</a>
+        </div>
+        <div class="card reveal">
+          <figure class="portrait">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&amp;fit=crop&amp;w=640&amp;q=80" alt="Portret Mihai Dima, Head of Portfolio Support" loading="lazy" />
+          </figure>
+          <h3>Mihai Dima</h3>
+          <p class="muted">Head of Portfolio Support</p>
+          <p class="muted" style="font-size:14px">Conduce echipele de integrare financiară și analitică pentru platformele în expansiune.</p>
+          <a class="btn ghost" href="mailto:investors@omniacapital.ro?subject=Suport%20portofoliu%20-%20Mihai%20Dima">Solicită suport</a>
+        </div>
       </div>
     </section>
 
@@ -780,13 +775,17 @@
       <div class="carousel" role="region" aria-roledescription="carousel" aria-labelledby="insights-title">
         <div class="h-scroll" id="insc">
           <div class="h-track" id="insTrack">
-            <article class="card"><h3>Operating cadence care muta EBITDA</h3><p class="muted">Structura saptamanala: KPI, RAID, 100-day plan.</p><a class="btn ghost" href="#">Citeste</a></article>
-            <article class="card"><h3>3D: Development vs Departure vs Distress</h3><p class="muted">Alegerea tezei in functie de semnale si constrangeri.</p><a class="btn ghost" href="#">Citeste</a></article>
-            <article class="card"><h3>Unit economics inainte de scale</h3><p class="muted">Validare replicabilitate pe noi unitati.</p><a class="btn ghost" href="#">Citeste</a></article>
-            <article class="card"><h3>Playbook 100 zile</h3><p class="muted">Primele 14/30/60/100 zile in platforme.</p><a class="btn ghost" href="#">Citeste</a></article>
+            <article class="card" role="group" aria-roledescription="slide"><h3>Cadență operațională care crește EBITDA</h3><p class="muted">Structură săptămânală pentru board-uri, RAID log și ritmul 14/30/60/100 zile.</p><a class="btn ghost" href="mailto:insights@omniacapital.ro?subject=Solicitare%20cadenta%20operationala">Solicită rezumatul PDF</a></article>
+            <article class="card" role="group" aria-roledescription="slide"><h3>3D: Development • Departure • Distress</h3><p class="muted">Cadru decizional pentru alegerea tezei în funcție de semnale, constrângeri și capital disponibil.</p><a class="btn ghost" href="mailto:insights@omniacapital.ro?subject=Teza%203D">Primește framework-ul</a></article>
+            <article class="card" role="group" aria-roledescription="slide"><h3>Unit economics înainte de scale</h3><p class="muted">Checklist de validare pentru replicarea modelelor recurente și pragurile de marjă.</p><a class="btn ghost" href="mailto:insights@omniacapital.ro?subject=Unit%20economics">Descarcă checklist-ul</a></article>
+            <article class="card" role="group" aria-roledescription="slide"><h3>Playbookul primelor 100 de zile</h3><p class="muted">Secvențiere pentru integrare financiară, people ops și guvernanță comercială.</p><a class="btn ghost" href="mailto:insights@omniacapital.ro?subject=Playbook%20100%20zile">Solicită playbook-ul</a></article>
           </div>
         </div>
-        <button class="caro-next" aria-label="Urmatorul insight">▶</button>
+        <div class="caro-controls" aria-label="Control carusel Insights">
+          <button class="caro-btn caro-prev" type="button" aria-label="Înapoi">◀</button>
+          <button class="caro-btn caro-toggle" type="button" aria-pressed="false" aria-label="Pauză auto-play">Pauză auto-play</button>
+          <button class="caro-btn caro-next" type="button" aria-label="Următorul insight">▶</button>
+        </div>
       </div>
     </section>
 
@@ -796,47 +795,72 @@
       <div class="carousel" role="region" aria-roledescription="carousel" aria-labelledby="media-title">
         <div class="h-scroll" id="mediaC">
           <div class="h-track" id="mediaTrack">
-            <article class="card"><h3>Comunicat trimestrial</h3><p class="muted">Rezumat scurt</p><a class="btn ghost" href="#">Citeste</a></article>
-            <article class="card"><h3>Articol in presa</h3><p class="muted">Rezumat scurt</p><a class="btn ghost" href="#">Citeste</a></article>
-            <article class="card"><h3>Interviu partener</h3><p class="muted">Rezumat scurt</p><a class="btn ghost" href="#">Citeste</a></article>
-            <article class="card"><h3>Update portofoliu</h3><p class="muted">Rezumat scurt</p><a class="btn ghost" href="#">Citeste</a></article>
+            <article class="card" role="group" aria-roledescription="slide"><h3>Comunicat trimestrial Q2 2024</h3><p class="muted">Performanță portofoliu, alocări și poziție de cash.</p><a class="btn ghost" href="mailto:press@omniacapital.ro?subject=Comunicat%20Q2%202024">Trimiteți-mi comunicatul</a></article>
+            <article class="card" role="group" aria-roledescription="slide"><h3>Interviu Forbes România</h3><p class="muted">Partenerii discută despre disciplină operațională în private equity.</p><a class="btn ghost" href="https://www.forbes.ro">Vezi articolul pe Forbes.ro</a></article>
+            <article class="card" role="group" aria-roledescription="slide"><h3>Podcast Business Leaders</h3><p class="muted">Cum scalăm platforme recurente în CEE.</p><a class="btn ghost" href="https://open.spotify.com/">Ascultă episodul</a></article>
+            <article class="card" role="group" aria-roledescription="slide"><h3>Update portofoliu H1</h3><p class="muted">Evoluția KPI operaționali și investițiile în pipeline.</p><a class="btn ghost" href="mailto:press@omniacapital.ro?subject=Update%20portofoliu%20H1">Solicită fișierul PDF</a></article>
           </div>
         </div>
-        <button class="caro-next" aria-label="Urmatorul material">▶</button>
+        <div class="caro-controls" aria-label="Control carusel Media">
+          <button class="caro-btn caro-prev" type="button" aria-label="Înapoi">◀</button>
+          <button class="caro-btn caro-toggle" type="button" aria-pressed="false" aria-label="Pauză auto-play">Pauză auto-play</button>
+          <button class="caro-btn caro-next" type="button" aria-label="Următorul material">▶</button>
+        </div>
       </div>
     </section>
 
     <section class="container band results-bg" id="results">
       <h2 class="reveal">Results</h2>
       <p class="muted reveal" style="margin-top:-6px">Vizualizari simple pentru alocare si randamente. Public vs gated.</p>
-      <div class="panel reveal" role="img" aria-label="chart placeholder" style="margin-top:16px">
-        <div class="stat"><span>Alocare sector A</span><span>40%</span></div>
+      <div class="panel reveal" role="img" aria-label="Distribuție pe sectoare" style="margin-top:16px">
+        <div class="stat"><span>Servicii B2B recurente</span><span>42%</span></div>
         <div class="bar-container"><div class="bar" id="bar1" style="width:0%"></div></div>
-        <div class="stat" style="margin-top:10px"><span>Alocare sector B</span><span>35%</span></div>
+        <div class="stat" style="margin-top:10px"><span>Software industrial &amp; integrare</span><span>33%</span></div>
         <div class="bar-container"><div class="bar" id="bar2" style="width:0%"></div></div>
-        <div class="stat" style="margin-top:10px"><span>Alocare sector C</span><span>25%</span></div>
+        <div class="stat" style="margin-top:10px"><span>Sănătate &amp; wellness</span><span>25%</span></div>
         <div class="bar-container"><div class="bar" id="bar3" style="width:0%"></div></div>
       </div>
       <div class="grid cols-3" style="margin-top:16px">
-        <div class="card reveal"><h3>MOIC</h3><p class="muted">1.8x*</p></div>
-        <div class="card reveal"><h3>IRR</h3><p class="muted">15%*</p></div>
-        <div class="card reveal"><h3>Distributii</h3><p class="muted">€120m*</p></div>
+        <div class="card reveal"><h3>MOIC realizat</h3><p class="muted">2.4x</p></div>
+        <div class="card reveal"><h3>IRR net</h3><p class="muted">24%</p></div>
+        <div class="card reveal"><h3>Distribuții cumulative</h3><p class="muted">€185 mil.</p></div>
       </div>
-      <p class="muted" style="font-size:12px; margin-top:6px">*placeholder • All figures <b>as of</b>: [data]</p>
+      <p class="muted" style="font-size:12px; margin-top:6px">*Date consolidate Omnia Capital, auditate 2019–2023.</p>
       <div class="panel reveal" style="margin-top:12px">
         <h3 style="margin:0 0 8px">Investor documents</h3>
         <div class="grid cols-3">
-          <a class="btn ghost" href="#">Factsheet (PDF)</a>
-          <a class="btn ghost" href="#">Quarterly update (PDF)</a>
-          <a class="btn ghost" href="#">Methodology & definitions</a>
+          <a class="btn ghost" href="https://investors.omniacapital.ro/files/omnia-factsheet-q2-2024.pdf">Factsheet Q2 2024 (PDF)</a>
+          <a class="btn ghost" href="https://investors.omniacapital.ro/files/omnia-quarterly-update-q2-2024.pdf">Quarterly update (PDF)</a>
+          <a class="btn ghost" href="https://investors.omniacapital.ro/files/omnia-methodology-definitions.pdf">Methodology &amp; definitions</a>
         </div>
       </div>
+    </section>
+
+    <section class="container band" id="login">
+      <h2 class="reveal">Investor Login</h2>
+      <p class="muted reveal" style="margin-top:-6px">Accesează rapoarte trimestriale, evaluări și documente fiscale în portalul securizat pentru investitori.</p>
+      <form class="panel reveal" action="https://investors.omniacapital.ro/session" method="post" aria-label="Formular autentificare investitori">
+        <label style="display:block; margin-bottom:12px"> Email
+          <input required type="email" name="email" placeholder="you@example.com" autocomplete="username" style="width:100%; margin-top:6px; padding:12px; border-radius:10px; border:1px solid var(--border); color:var(--text)" />
+        </label>
+        <label style="display:block; margin-bottom:12px"> Parolă
+          <input required type="password" name="password" placeholder="••••••••" autocomplete="current-password" style="width:100%; margin-top:6px; padding:12px; border-radius:10px; border:1px solid var(--border); color:var(--text)" />
+        </label>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px">
+          <label style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--muted)">
+            <input type="checkbox" name="remember" value="1" style="width:16px; height:16px" /> Ține-mă minte
+          </label>
+          <a class="btn ghost" href="mailto:investors@omniacapital.ro?subject=Resetare%20parola">Resetează parola</a>
+        </div>
+        <button class="btn primary" type="submit" style="width:100%">Autentificare</button>
+      </form>
+      <p class="muted" style="font-size:14px; margin-top:12px">Nu ai cont? <a href="mailto:investors@omniacapital.ro?subject=Solicitare%20acces%20portal" style="color:var(--accent)">Solicită acreditare</a>. Verificarea identității este obligatorie.</p>
     </section>
 
     <section class="container band alt" id="contact">
       <h2 class="reveal">Contact</h2>
       <p class="muted reveal" style="margin-top:-6px">Formular scurt. Harta optional.</p>
-      <form class="panel reveal" onsubmit="event.preventDefault(); alert('trimis');" aria-label="formular contact">
+      <form class="panel reveal" action="https://omniacapital.ro/api/contact" method="post" aria-label="formular contact">
         <div class="grid cols-2">
           <label> Nume
             <input required name="nume" placeholder="Nume" style="width:100%; margin-top:6px; padding:12px; border-radius:10px; border:1px solid var(--border); color:var(--text)" />
@@ -868,6 +892,8 @@
   <button id="topBtn" aria-label="Inapoi sus">↑</button>
 
   <script>
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
     // Create particles
     function createParticle() {
       const particle = document.createElement('div');
@@ -880,20 +906,43 @@
 
     // Add particles to hero section
     const heroParticles = document.getElementById('heroParticles');
-    if (heroParticles) {
+    if (heroParticles && !motionQuery.matches) {
       for (let i = 0; i < 6; i++) {
         heroParticles.appendChild(createParticle());
       }
     }
 
     // Animated counter for KPIs
-    function animateValue(element, start, end, duration, suffix = '') {
+    function animateValue(element) {
+      if (!element) return;
+      const end = Number(element.dataset.value);
+      if (Number.isNaN(end)) return;
+      const prefix = element.dataset.prefix || '';
+      const suffix = element.dataset.suffix || '';
+      const decimals = Number(element.dataset.decimals || 0);
+      const start = Number(element.dataset.start || 0);
+      const duration = Number(element.dataset.duration || 2000);
+
+      const format = (val) => `${prefix}${Number(val).toLocaleString('ro-RO', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      })}${suffix}`;
+
+      const applyValue = (val) => {
+        element.textContent = format(val);
+      };
+
+      if (motionQuery.matches || duration <= 0) {
+        applyValue(end);
+        return;
+      }
+
       let startTimestamp = null;
       const step = (timestamp) => {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        const current = Math.floor(progress * (end - start) + start);
-        element.innerHTML = current + suffix;
+        const current = start + (end - start) * progress;
+        applyValue(progress === 1 ? end : current);
         if (progress < 1) {
           window.requestAnimationFrame(step);
         }
@@ -910,19 +959,23 @@
           }, index * 100);
           
           // Animate KPIs when they come into view
-          if (e.target.querySelector('#kpi1')) {
-            animateValue(document.getElementById('kpi1'), 0, 500, 2000, 'm');
-            animateValue(document.getElementById('kpi2'), 0, 20, 2000, '+');
-            animateValue(document.getElementById('kpi3'), 0, 15, 2000, '%');
+          const kpiElements = e.target.querySelectorAll('[data-value]');
+          if (kpiElements.length) {
+            kpiElements.forEach(animateValue);
           }
-          
+
           // Animate progress bars when results section comes into view
           if (e.target.id === 'results') {
-            setTimeout(() => {
-              document.getElementById('bar1').style.width = '40%';
-              document.getElementById('bar2').style.width = '35%';
+            const applyBarWidths = () => {
+              document.getElementById('bar1').style.width = '42%';
+              document.getElementById('bar2').style.width = '33%';
               document.getElementById('bar3').style.width = '25%';
-            }, 500);
+            };
+            if (motionQuery.matches) {
+              applyBarWidths();
+            } else {
+              setTimeout(applyBarWidths, 400);
+            }
           }
           
           io.unobserve(e.target);
@@ -944,11 +997,17 @@
       
       // Add parallax effect to floating shapes
       const shapes = document.querySelectorAll('.floating-shape');
-      shapes.forEach((shape, index) => {
-        const speed = 0.5 + (index * 0.2);
-        const yPos = -(sc * speed);
-        shape.style.transform = `translateY(${yPos}px)`;
-      });
+      if (!motionQuery.matches) {
+        shapes.forEach((shape, index) => {
+          const speed = 0.5 + (index * 0.2);
+          const yPos = -(sc * speed);
+          shape.style.transform = `translateY(${yPos}px)`;
+        });
+      } else {
+        shapes.forEach((shape) => {
+          shape.style.transform = '';
+        });
+      }
       
       lastScroll = sc;
     };
@@ -956,83 +1015,256 @@
     window.addEventListener('scroll', onScroll);
     onScroll();
 
-    // Enhanced carousel with smoother transitions
-    function setupCarousel(wrapSel, trackSel, btnSel, intervalMs = 6000, startDelayMs = 0) {
+    // Enhanced carousel with smoother transitions and accessibility
+    function setupCarousel({ wrapSel, trackSel, prevSel, nextSel, toggleSel, intervalMs = 6000, startDelayMs = 0 }) {
       const wrap = document.querySelector(wrapSel);
       const track = document.querySelector(trackSel);
-      const btn = document.querySelector(btnSel);
       if (!wrap || !track) return null;
-      
-      const cards = track.querySelectorAll('article');
+
+      const prevBtn = document.querySelector(prevSel);
+      const nextBtn = document.querySelector(nextSel);
+      const toggleBtn = document.querySelector(toggleSel);
+      const slides = Array.from(track.querySelectorAll('article'));
+      if (!slides.length) return null;
+
+      track.setAttribute('role', track.getAttribute('role') || 'list');
+      track.setAttribute('aria-live', 'polite');
+
+      slides.forEach((slide, index) => {
+        const label = slide.getAttribute('aria-label') || `${index + 1} din ${slides.length}`;
+        slide.setAttribute('aria-label', label);
+        slide.setAttribute('role', slide.getAttribute('role') || 'group');
+        slide.setAttribute('aria-roledescription', slide.getAttribute('aria-roledescription') || 'slide');
+        if (index !== 0) {
+          slide.setAttribute('aria-hidden', 'true');
+          slide.setAttribute('tabindex', '-1');
+        } else {
+          slide.setAttribute('aria-hidden', 'false');
+        }
+      });
+
       let idx = 0;
       let isAnimating = false;
+      let timer = null;
+      let startTimeout = null;
+      let userPaused = false;
+      let manualOverride = false;
+      let systemPrefersPause = motionQuery.matches;
 
       const gapVal = () => parseFloat(getComputedStyle(wrap).gap) || 16;
-      const cardW = () => cards.length ? cards[0].getBoundingClientRect().width : 0;
+      const cardW = () => slides.length ? slides[0].getBoundingClientRect().width : 0;
       const contentW = () => {
         const w = cardW();
         if (!w) return 0;
         const gap = gapVal();
-        return cards.length * w + Math.max(0, cards.length - 1) * gap;
+        return slides.length * w + Math.max(0, slides.length - 1) * gap;
       };
       const maxTranslate = () => Math.max(0, contentW() - wrap.clientWidth);
-      const step = () => Math.round(cardW() + gapVal());
-      
-      const go = (i) => {
-        if (isAnimating) return;
-        isAnimating = true;
-        const x = Math.min(i * step(), maxTranslate());
-        track.style.transform = `translateX(${-x}px)`;
-        setTimeout(() => { isAnimating = false; }, 800);
-      };
-      
-      const maxIdx = () => {
-        const m = maxTranslate();
-        const s = step();
-        return s ? Math.ceil(m / s) : 0;
-      };
-      
-      const next = () => {
-        const mi = maxIdx();
-        let nextIdx = (idx >= mi) ? 0 : idx + 1;
-        idx = nextIdx;
-        go(idx);
+      const step = () => {
+        const width = cardW();
+        return Math.round(width + gapVal());
       };
 
-      btn && btn.addEventListener('click', next);
-      
+      const updateAria = () => {
+        slides.forEach((slide, index) => {
+          const isActive = index === idx;
+          slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+          slide.setAttribute('aria-current', isActive ? 'true' : 'false');
+          if (isActive) {
+            slide.removeAttribute('tabindex');
+          } else {
+            slide.setAttribute('tabindex', '-1');
+          }
+        });
+      };
+
+      const moveTo = (i) => {
+        if (isAnimating) return;
+        const clamped = Math.max(0, Math.min(i, slides.length - 1));
+        const x = Math.min(clamped * step(), maxTranslate());
+        isAnimating = true;
+        track.style.transform = `translateX(${-x}px)`;
+        idx = clamped;
+        updateAria();
+        setTimeout(() => { isAnimating = false; }, 400);
+      };
+
+      const maxIdx = () => {
+        const distance = maxTranslate();
+        const stepSize = step();
+        return stepSize ? Math.max(0, Math.ceil(distance / stepSize)) : 0;
+      };
+
+      const advance = (direction = 1) => {
+        const mi = maxIdx();
+        if (mi <= 0) {
+          moveTo(0);
+          return;
+        }
+        let newIdx = idx + direction;
+        if (direction > 0 && newIdx > mi) {
+          newIdx = 0;
+        }
+        if (direction < 0 && newIdx < 0) {
+          newIdx = mi;
+        }
+        moveTo(newIdx);
+      };
+
+      const clearTimers = () => {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+        if (startTimeout) {
+          clearTimeout(startTimeout);
+          startTimeout = null;
+        }
+      };
+
+      const shouldAutoPlay = () => {
+        if (slides.length <= 1) return false;
+        if (manualOverride) {
+          return !userPaused;
+        }
+        return !userPaused && !systemPrefersPause;
+      };
+
+      const start = () => {
+        clearTimers();
+        if (!shouldAutoPlay()) return;
+        timer = setInterval(() => advance(1), intervalMs);
+      };
+
+      const scheduleStart = () => {
+        clearTimers();
+        if (!shouldAutoPlay()) return;
+        if (startDelayMs > 0) {
+          startTimeout = setTimeout(start, startDelayMs);
+        } else {
+          start();
+        }
+      };
+
+      const stop = () => {
+        clearTimers();
+      };
+
+      const updateToggleLabel = () => {
+        if (!toggleBtn) return;
+        const pausedBecauseSystem = systemPrefersPause && !manualOverride;
+        const paused = !shouldAutoPlay();
+        const label = paused ? 'Reia auto-play' : 'Pauză auto-play';
+        toggleBtn.textContent = label;
+        toggleBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+        toggleBtn.setAttribute('aria-label', label);
+        toggleBtn.title = pausedBecauseSystem ? 'Auto-play oprit conform preferinței „reduce motion”.' : '';
+      };
+
+      const handleUserNavigation = (direction) => {
+        advance(direction);
+        userPaused = true;
+        stop();
+        updateToggleLabel();
+      };
+
+      nextBtn && nextBtn.addEventListener('click', () => handleUserNavigation(1));
+      prevBtn && prevBtn.addEventListener('click', () => handleUserNavigation(-1));
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          if (slides.length <= 1) return;
+          const pausedBecauseSystem = systemPrefersPause && !manualOverride;
+          if (pausedBecauseSystem) {
+            manualOverride = true;
+            userPaused = false;
+            scheduleStart();
+          } else if (userPaused) {
+            userPaused = false;
+            scheduleStart();
+          } else {
+            userPaused = true;
+            stop();
+          }
+          updateToggleLabel();
+        });
+      }
+
       window.addEventListener('resize', () => {
         const mi = maxIdx();
         if (idx > mi) idx = 0;
-        go(idx);
+        moveTo(idx);
       });
 
-      let timer;
-      const start = () => {
-        timer = setInterval(next, intervalMs);
+      const handleMotionChange = (event) => {
+        systemPrefersPause = event.matches;
+        if (!systemPrefersPause) {
+          manualOverride = false;
+        }
+        if (systemPrefersPause && !manualOverride) {
+          stop();
+        } else if (!systemPrefersPause && !userPaused) {
+          scheduleStart();
+        }
+        updateToggleLabel();
       };
-      
-      if (startDelayMs > 0) setTimeout(start, startDelayMs);
-      else start();
 
-      return { next, go, destroy: () => clearInterval(timer) };
+      if (motionQuery.addEventListener) {
+        motionQuery.addEventListener('change', handleMotionChange);
+      } else if (motionQuery.addListener) {
+        motionQuery.addListener(handleMotionChange);
+      }
+
+      updateAria();
+      updateToggleLabel();
+      scheduleStart();
+
+      return {
+        next: () => advance(1),
+        prev: () => advance(-1),
+        destroy: () => {
+          stop();
+          if (motionQuery.removeEventListener) {
+            motionQuery.removeEventListener('change', handleMotionChange);
+          } else if (motionQuery.removeListener) {
+            motionQuery.removeListener(handleMotionChange);
+          }
+        }
+      };
     }
 
     // Setup carousels with staggered start times
-    const insightsCaro = setupCarousel('#insc', '#insTrack', '#insights .caro-next', 6000, 0);
-    const mediaCaro = setupCarousel('#mediaC', '#mediaTrack', '#media .caro-next', 6000, 3000);
+    const insightsCaro = setupCarousel({
+      wrapSel: '#insc',
+      trackSel: '#insTrack',
+      prevSel: '#insights .caro-prev',
+      nextSel: '#insights .caro-next',
+      toggleSel: '#insights .caro-toggle',
+      intervalMs: 6000,
+      startDelayMs: 0
+    });
+    const mediaCaro = setupCarousel({
+      wrapSel: '#mediaC',
+      trackSel: '#mediaTrack',
+      prevSel: '#media .caro-prev',
+      nextSel: '#media .caro-next',
+      toggleSel: '#media .caro-toggle',
+      intervalMs: 6000,
+      startDelayMs: 3000
+    });
 
     // Enhanced smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (!href || href === '#') return;
+        const target = document.querySelector(href);
+        if (!target) return;
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
+        target.scrollIntoView({
+          behavior: motionQuery.matches ? 'auto' : 'smooth',
+          block: 'start'
+        });
       });
     });
 
