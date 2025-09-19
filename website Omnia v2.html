@@ -599,29 +599,294 @@
     }
 
     /* ==== Option A: Full-bleed backgrounds without HTML changes ==== */
-    section.container{ position:relative; z-index:0; border-bottom:none; }
+    section.container{
+      position:relative;
+      z-index:0;
+      border-bottom:none;
+      overflow:hidden;
+      padding-block:clamp(60px, 7vw, 100px);
+    }
     section.container::before{
-      content:""; position:absolute; top:0; bottom:0; left:50%; width:100vw;
-      transform:translateX(-50%); z-index:-1; background:inherit; background-attachment:scroll;
+      content:"";
+      position:absolute;
+      top:0;
+      bottom:0;
+      left:50%;
+      width:100vw;
+      transform:translateX(-50%);
+      z-index:-1;
+      background:inherit;
+      background-attachment:scroll;
     }
 
-    /* Unify colors across all sections to match Media/Contact (neutral, clean) */
-    section.hero-bg, section.strategy-bg, section.team-bg, section.insights-bg, section.results-bg{ background:transparent !important; }
-    #strategy, #team, #results{ background-image:none !important; }
-
-    /* Remove organic connectors/waves to avoid visible edges */
-    #strategy::before, #team::before, #results::before,
-    #strategy::after,  #team::after,  #results::after{ display:none !important; }
-
-    /* Remove section-specific tints: align cards/panels to Media/Contact aesthetic */
-    #strategy .card, #team .card, #results .card{
-      background:linear-gradient(135deg, rgba(255,255,255,.95), rgba(247,248,249,.85)) !important;
-      border-color:var(--border) !important; box-shadow:0 4px 20px rgba(0,0,0,.08) !important;
-      border-radius:16px !important;
+    .band{
+      display:grid;
+      gap:32px;
     }
-    #strategy .panel, #team .panel, #results .panel{
-      background:linear-gradient(135deg, rgba(255,255,255,.95), rgba(247,248,249,.85)) !important;
-      border-color:var(--border) !important; border-radius:16px !important;
+
+    .section-heading{
+      display:grid;
+      gap:8px;
+      max-width:min(560px, 100%);
+      position:relative;
+    }
+
+    .section-body{
+      display:grid;
+      gap:24px;
+    }
+
+    .section-heading.align-right{
+      margin-left:auto;
+      text-align:right;
+    }
+
+    .section-heading.align-center{
+      margin-inline:auto;
+      text-align:center;
+    }
+
+    .section-label{
+      font-size:12px;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      font-weight:600;
+      color:var(--accent);
+    }
+
+    .section-heading::after{
+      content:"";
+      width:56px;
+      height:2px;
+      background:linear-gradient(90deg, var(--accent), var(--accent-light));
+      border-radius:999px;
+      margin-top:6px;
+    }
+
+    .section-heading.align-right::after{justify-self:end;}
+
+    .section-heading.align-center::after{justify-self:center;}
+
+    .section-subnav{
+      display:flex;
+      gap:12px;
+      margin-top:24px;
+      padding:12px 16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.6);
+      backdrop-filter:blur(18px) saturate(130%);
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+      flex-wrap:wrap;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .section-subnav::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(120deg, rgba(0,103,127,.12), transparent 70%);
+      z-index:-1;
+    }
+
+    .section-subnav a{
+      padding:6px 12px;
+      border-radius:10px;
+      background:rgba(0,103,127,.12);
+      color:var(--accent);
+      font-weight:600;
+      transition:all .3s ease;
+    }
+
+    .section-subnav a:hover,
+    .section-subnav a:focus{
+      background:linear-gradient(135deg, var(--accent), var(--accent-light));
+      color:#fff;
+      transform:translateY(-2px);
+    }
+
+    .section-divider{
+      width:100vw;
+      height:66px;
+      margin:0 auto;
+      position:relative;
+      left:50%;
+      transform:translateX(-50%);
+      overflow:hidden;
+      pointer-events:none;
+    }
+
+    .section-divider::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(0,103,127,.12), transparent 65%);
+      clip-path:polygon(0 100%, 0 0, 100% 60%, 100% 100%);
+    }
+
+    .section-divider.invert::before{
+      clip-path:polygon(0 0, 100% 0, 100% 100%, 0 40%);
+      background:linear-gradient(135deg, rgba(199,168,106,.18), transparent 70%);
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto 0 -120px;
+      height:220px;
+      background:radial-gradient(circle at 20% 30%, rgba(0,103,127,.18), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(199,168,106,.2), transparent 65%);
+      opacity:.7;
+      pointer-events:none;
+      z-index:-1;
+    }
+
+    #strategy{
+      background-image:linear-gradient(135deg, rgba(199,168,106,.08), transparent 60%);
+    }
+
+    #strategy .section-body{
+      display:grid;
+      gap:20px;
+    }
+
+    @media (min-width: 901px){
+      #strategy .section-body{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        align-items:start;
+      }
+      #strategy .section-body .card:nth-child(1){
+        grid-column:span 2;
+        background:linear-gradient(135deg, rgba(0,103,127,.12), rgba(0,103,127,.04));
+        border-color:rgba(0,103,127,.25);
+        box-shadow:0 18px 36px rgba(0,103,127,.16);
+      }
+      #strategy .section-body .card:nth-child(2){
+        margin-top:32px;
+      }
+      #strategy .section-body .card:nth-child(3){
+        margin-top:64px;
+      }
+    }
+
+    #team{
+      background-image:linear-gradient(120deg, rgba(0,103,127,.06), rgba(255,255,255,0) 55%),
+        radial-gradient(circle at 90% 10%, rgba(0,103,127,.08), transparent 70%);
+    }
+
+    #team .section-body{
+      display:grid;
+      gap:24px;
+    }
+
+    @media (min-width: 901px){
+      #team .section-body{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+      }
+      #team .card:nth-child(1){
+        margin-top:48px;
+      }
+      #team .card:nth-child(2){
+        margin-top:8px;
+      }
+      #team .card:nth-child(3){
+        margin-top:32px;
+      }
+    }
+
+    #insights{
+      background-image:linear-gradient(160deg, rgba(0,103,127,.09), transparent 70%);
+    }
+
+    #insights .carousel{
+      padding:12px;
+      border-radius:22px;
+      background:rgba(255,255,255,.55);
+      box-shadow:0 18px 38px rgba(0,0,0,.12);
+    }
+
+    #insights .h-scroll{
+      padding:18px 4px 10px;
+    }
+
+    #media{
+      background-image:linear-gradient(140deg, rgba(199,168,106,.1), transparent 68%);
+    }
+
+    #media .carousel{
+      background:rgba(255,255,255,.7);
+      border-radius:22px;
+      padding:12px;
+      box-shadow:0 16px 36px rgba(199,168,106,.18);
+    }
+
+    #results{
+      color:#0b1a21;
+      background-image:linear-gradient(135deg, rgba(0,103,127,.18), rgba(0,103,127,.05));
+    }
+
+    #results .section-body{
+      display:grid;
+      gap:24px;
+    }
+
+    #results .results-right{
+      display:grid;
+      gap:18px;
+    }
+
+    #results .results-metrics{
+      display:grid;
+      gap:18px;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    }
+
+    #results .results-metrics .card{height:100%;}
+
+    @media (min-width: 901px){
+      #results .section-body{
+        grid-template-columns:minmax(0,1.05fr) minmax(0,0.95fr);
+        align-items:start;
+      }
+    }
+
+    #results .panel,
+    #results .card{
+      background:linear-gradient(135deg, rgba(255,255,255,.9), rgba(240,248,255,.82));
+      border-color:rgba(0,103,127,.2);
+      box-shadow:0 16px 32px rgba(0,103,127,.12);
+    }
+
+    #results .grid{
+      gap:18px;
+    }
+
+    #results .card h3{color:#0b1a21;}
+
+    #results .card p{color:#124252; font-size:18px; font-weight:600;}
+
+    #results .footnote{font-size:12px; color:rgba(10,44,56,.72); margin:4px 0 0;}
+
+    #login{
+      background-image:linear-gradient(160deg, rgba(0,103,127,.06), transparent 60%);
+    }
+
+    #contact{
+      background-image:linear-gradient(150deg, rgba(199,168,106,.12), transparent 70%);
+    }
+
+    @media (max-width: 900px){
+      .section-subnav{margin-top:18px; padding:10px 12px;}
+      .section-heading.align-right{margin-left:0; text-align:left;}
+      .section-heading.align-center::after,
+      .section-heading.align-right::after{justify-self:flex-start;}
+      .section-divider{height:44px;}
+    }
+
+    @media (max-width: 600px){
+      .section-subnav{gap:8px; overflow-x:auto;}
+      .section-subnav a{white-space:nowrap;}
+      .section-divider{height:32px;}
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -695,6 +960,14 @@
           <div class="kpi"><b id="kpi2" data-value="18" data-suffix="+">0+</b><span class="muted">platforme scalate activ</span></div>
           <div class="kpi"><b id="kpi3" data-value="24" data-suffix="%">0%</b><span class="muted">IRR net livrat investitorilor</span></div>
         </div>
+        <nav class="section-subnav" aria-label="Navigare rapidă secțiuni">
+          <a href="#strategy">Strategy</a>
+          <a href="#team">Team</a>
+          <a href="#insights">Insights</a>
+          <a href="#media">Media</a>
+          <a href="#results">Results</a>
+          <a href="#contact">Contact</a>
+        </nav>
         <p class="muted" style="font-size:12px; margin-top:6px">*Date consolidate Omnia Capital, auditate 2019–2023.</p>
         </div>
       <div class="panel reveal">
@@ -713,10 +986,15 @@
       </div>
     </section>
 
+    <div class="section-divider" aria-hidden="true"></div>
+
     <section class="container band strategy-bg" id="strategy">
-      <h2 class="reveal">Strategy</h2>
-      <p class="muted reveal" style="margin-top:-6px">Trei cai simple. Un sistem comun de creare a valorii.</p>
-      <div class="grid cols-3" style="margin-top:18px">
+      <div class="section-heading">
+        <span class="section-label reveal">Playbooks</span>
+        <h2 class="reveal">Strategy</h2>
+        <p class="muted reveal" style="margin-top:-6px">Trei cai simple. Un sistem comun de creare a valorii.</p>
+      </div>
+      <div class="section-body">
         <a class="card reveal" href="/strategy/development">
           <h3>Development</h3>
           <p class="muted">Crestere organica, roll-up, replicare playbook. Focus pe unit economics si viteza de executie.</p>
@@ -735,10 +1013,15 @@
       </div>
     </section>
 
+    <div class="section-divider invert" aria-hidden="true"></div>
+
     <section class="container band alt team-bg" id="team">
-      <h2 class="reveal">Echipa</h2>
-      <p class="muted reveal" style="margin-top:-6px">Executie pragmatica. Responsabilitati clare. Roluri vizibile.</p>
-      <div class="grid cols-3" style="margin-top:18px">
+      <div class="section-heading align-right">
+        <span class="section-label reveal">Operatori</span>
+        <h2 class="reveal">Echipa</h2>
+        <p class="muted reveal" style="margin-top:-6px">Executie pragmatica. Responsabilitati clare. Roluri vizibile.</p>
+      </div>
+      <div class="section-body">
         <div class="card reveal">
           <figure class="portrait">
             <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&amp;fit=crop&amp;w=640&amp;q=80" alt="Portret Andrei Ionescu, Managing Partner" loading="lazy" />
@@ -769,72 +1052,97 @@
       </div>
     </section>
 
+    <div class="section-divider" aria-hidden="true"></div>
+
     <section class="container band insights-bg" id="insights">
-      <h2 class="reveal" id="insights-title">Insights</h2>
-      <p class="muted reveal" style="margin-top:-6px">Note scurte care explica tezele si pattern-urile folosite in investitii.</p>
-      <div class="carousel" role="region" aria-roledescription="carousel" aria-labelledby="insights-title">
-        <div class="h-scroll" id="insc">
-          <div class="h-track" id="insTrack">
+      <div class="section-heading align-center">
+        <span class="section-label reveal">Perspective</span>
+        <h2 class="reveal" id="insights-title">Insights</h2>
+        <p class="muted reveal" style="margin-top:-6px">Note scurte care explica tezele si pattern-urile folosite in investitii.</p>
+      </div>
+      <div class="section-body">
+        <div class="carousel" role="region" aria-roledescription="carousel" aria-labelledby="insights-title">
+          <div class="h-scroll" id="insc">
+            <div class="h-track" id="insTrack">
             <article class="card" role="group" aria-roledescription="slide"><h3>Cadență operațională care crește EBITDA</h3><p class="muted">Structură săptămânală pentru board-uri, RAID log și ritmul 14/30/60/100 zile.</p><a class="btn ghost" href="mailto:insights@omniacapital.ro?subject=Solicitare%20cadenta%20operationala">Solicită rezumatul PDF</a></article>
             <article class="card" role="group" aria-roledescription="slide"><h3>3D: Development • Departure • Distress</h3><p class="muted">Cadru decizional pentru alegerea tezei în funcție de semnale, constrângeri și capital disponibil.</p><a class="btn ghost" href="mailto:insights@omniacapital.ro?subject=Teza%203D">Primește framework-ul</a></article>
             <article class="card" role="group" aria-roledescription="slide"><h3>Unit economics înainte de scale</h3><p class="muted">Checklist de validare pentru replicarea modelelor recurente și pragurile de marjă.</p><a class="btn ghost" href="mailto:insights@omniacapital.ro?subject=Unit%20economics">Descarcă checklist-ul</a></article>
             <article class="card" role="group" aria-roledescription="slide"><h3>Playbookul primelor 100 de zile</h3><p class="muted">Secvențiere pentru integrare financiară, people ops și guvernanță comercială.</p><a class="btn ghost" href="mailto:insights@omniacapital.ro?subject=Playbook%20100%20zile">Solicită playbook-ul</a></article>
+            </div>
           </div>
-        </div>
-        <div class="caro-controls" aria-label="Control carusel Insights">
-          <button class="caro-btn caro-prev" type="button" aria-label="Înapoi">◀</button>
-          <button class="caro-btn caro-toggle" type="button" aria-pressed="false" aria-label="Pauză auto-play">Pauză auto-play</button>
-          <button class="caro-btn caro-next" type="button" aria-label="Următorul insight">▶</button>
+          <div class="caro-controls" aria-label="Control carusel Insights">
+            <button class="caro-btn caro-prev" type="button" aria-label="Înapoi">◀</button>
+            <button class="caro-btn caro-toggle" type="button" aria-pressed="false" aria-label="Pauză auto-play">Pauză auto-play</button>
+            <button class="caro-btn caro-next" type="button" aria-label="Următorul insight">▶</button>
+          </div>
         </div>
       </div>
     </section>
 
+    <div class="section-divider invert" aria-hidden="true"></div>
+
     <section class="container band alt" id="media">
-      <h2 class="reveal" id="media-title">Media</h2>
-      <p class="muted reveal" style="margin-top:-6px">Arhiva articole, comunicate, aparitii. Filtre simple.</p>
-      <div class="carousel" role="region" aria-roledescription="carousel" aria-labelledby="media-title">
-        <div class="h-scroll" id="mediaC">
-          <div class="h-track" id="mediaTrack">
+      <div class="section-heading align-right">
+        <span class="section-label reveal">Press &amp; PR</span>
+        <h2 class="reveal" id="media-title">Media</h2>
+        <p class="muted reveal" style="margin-top:-6px">Arhiva articole, comunicate, aparitii. Filtre simple.</p>
+      </div>
+      <div class="section-body">
+        <div class="carousel" role="region" aria-roledescription="carousel" aria-labelledby="media-title">
+          <div class="h-scroll" id="mediaC">
+            <div class="h-track" id="mediaTrack">
             <article class="card" role="group" aria-roledescription="slide"><h3>Comunicat trimestrial Q2 2024</h3><p class="muted">Performanță portofoliu, alocări și poziție de cash.</p><a class="btn ghost" href="mailto:press@omniacapital.ro?subject=Comunicat%20Q2%202024">Trimiteți-mi comunicatul</a></article>
             <article class="card" role="group" aria-roledescription="slide"><h3>Interviu Forbes România</h3><p class="muted">Partenerii discută despre disciplină operațională în private equity.</p><a class="btn ghost" href="https://www.forbes.ro">Vezi articolul pe Forbes.ro</a></article>
             <article class="card" role="group" aria-roledescription="slide"><h3>Podcast Business Leaders</h3><p class="muted">Cum scalăm platforme recurente în CEE.</p><a class="btn ghost" href="https://open.spotify.com/">Ascultă episodul</a></article>
             <article class="card" role="group" aria-roledescription="slide"><h3>Update portofoliu H1</h3><p class="muted">Evoluția KPI operaționali și investițiile în pipeline.</p><a class="btn ghost" href="mailto:press@omniacapital.ro?subject=Update%20portofoliu%20H1">Solicită fișierul PDF</a></article>
+            </div>
           </div>
-        </div>
-        <div class="caro-controls" aria-label="Control carusel Media">
-          <button class="caro-btn caro-prev" type="button" aria-label="Înapoi">◀</button>
-          <button class="caro-btn caro-toggle" type="button" aria-pressed="false" aria-label="Pauză auto-play">Pauză auto-play</button>
-          <button class="caro-btn caro-next" type="button" aria-label="Următorul material">▶</button>
+          <div class="caro-controls" aria-label="Control carusel Media">
+            <button class="caro-btn caro-prev" type="button" aria-label="Înapoi">◀</button>
+            <button class="caro-btn caro-toggle" type="button" aria-pressed="false" aria-label="Pauză auto-play">Pauză auto-play</button>
+            <button class="caro-btn caro-next" type="button" aria-label="Următorul material">▶</button>
+          </div>
         </div>
       </div>
     </section>
 
+    <div class="section-divider" aria-hidden="true"></div>
+
     <section class="container band results-bg reveal" id="results">
-      <h2 class="reveal">Results</h2>
-      <p class="muted reveal" style="margin-top:-6px">Vizualizari simple pentru alocare si randamente. Public vs gated.</p>
-      <div class="panel reveal" role="img" aria-label="Distribuție pe sectoare" style="margin-top:16px">
-        <div class="stat"><span>Servicii B2B recurente</span><span>42%</span></div>
-        <div class="bar-container"><div class="bar" id="bar1" style="width:0%"></div></div>
-        <div class="stat" style="margin-top:10px"><span>Software industrial &amp; integrare</span><span>33%</span></div>
-        <div class="bar-container"><div class="bar" id="bar2" style="width:0%"></div></div>
-        <div class="stat" style="margin-top:10px"><span>Sănătate &amp; wellness</span><span>25%</span></div>
-        <div class="bar-container"><div class="bar" id="bar3" style="width:0%"></div></div>
+      <div class="section-heading">
+        <span class="section-label reveal">Performanță</span>
+        <h2 class="reveal">Results</h2>
+        <p class="muted reveal" style="margin-top:-6px">Vizualizari simple pentru alocare si randamente. Public vs gated.</p>
       </div>
-      <div class="grid cols-3" style="margin-top:16px">
-        <div class="card reveal"><h3>MOIC realizat</h3><p class="muted">2.4x</p></div>
-        <div class="card reveal"><h3>IRR net</h3><p class="muted">24%</p></div>
-        <div class="card reveal"><h3>Distribuții cumulative</h3><p class="muted">€185 mil.</p></div>
-      </div>
-      <p class="muted" style="font-size:12px; margin-top:6px">*Date consolidate Omnia Capital, auditate 2019–2023.</p>
-      <div class="panel reveal" style="margin-top:12px">
-        <h3 style="margin:0 0 8px">Investor documents</h3>
-        <div class="grid cols-3">
-          <a class="btn ghost" href="https://investors.omniacapital.ro/files/omnia-factsheet-q2-2024.pdf">Factsheet Q2 2024 (PDF)</a>
-          <a class="btn ghost" href="https://investors.omniacapital.ro/files/omnia-quarterly-update-q2-2024.pdf">Quarterly update (PDF)</a>
-          <a class="btn ghost" href="https://investors.omniacapital.ro/files/omnia-methodology-definitions.pdf">Methodology &amp; definitions</a>
+      <div class="section-body">
+        <div class="panel reveal" role="img" aria-label="Distribuție pe sectoare">
+          <div class="stat"><span>Servicii B2B recurente</span><span>42%</span></div>
+          <div class="bar-container"><div class="bar" id="bar1" style="width:0%"></div></div>
+          <div class="stat" style="margin-top:10px"><span>Software industrial &amp; integrare</span><span>33%</span></div>
+          <div class="bar-container"><div class="bar" id="bar2" style="width:0%"></div></div>
+          <div class="stat" style="margin-top:10px"><span>Sănătate &amp; wellness</span><span>25%</span></div>
+          <div class="bar-container"><div class="bar" id="bar3" style="width:0%"></div></div>
+        </div>
+        <div class="results-right">
+          <div class="results-metrics">
+            <div class="card reveal"><h3>MOIC realizat</h3><p>2.4x</p></div>
+            <div class="card reveal"><h3>IRR net</h3><p>24%</p></div>
+            <div class="card reveal"><h3>Distribuții cumulative</h3><p>€185 mil.</p></div>
+          </div>
+          <p class="muted footnote reveal">*Date consolidate Omnia Capital, auditate 2019–2023.</p>
+          <div class="panel reveal">
+            <h3 style="margin:0 0 8px">Investor documents</h3>
+            <div class="grid cols-3">
+              <a class="btn ghost" href="https://investors.omniacapital.ro/files/omnia-factsheet-q2-2024.pdf">Factsheet Q2 2024 (PDF)</a>
+              <a class="btn ghost" href="https://investors.omniacapital.ro/files/omnia-quarterly-update-q2-2024.pdf">Quarterly update (PDF)</a>
+              <a class="btn ghost" href="https://investors.omniacapital.ro/files/omnia-methodology-definitions.pdf">Methodology &amp; definitions</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
+
+    <div class="section-divider invert" aria-hidden="true"></div>
 
     <section class="container band" id="login">
       <h2 class="reveal">Investor Login</h2>
@@ -856,6 +1164,8 @@
       </form>
       <p class="muted" style="font-size:14px; margin-top:12px">Nu ai cont? <a href="mailto:investors@omniacapital.ro?subject=Solicitare%20acces%20portal" style="color:var(--accent)">Solicită acreditare</a>. Verificarea identității este obligatorie.</p>
     </section>
+
+    <div class="section-divider" aria-hidden="true"></div>
 
     <section class="container band alt" id="contact">
       <h2 class="reveal">Contact</h2>
